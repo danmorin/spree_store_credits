@@ -11,10 +11,12 @@ module Spree
 
     validates_with StoreCreditMinimumValidator
 
+    Order.state_machines[:state].before_transition :to => "payment", :do => :auto_apply_credits_to_order
+    Order.state_machines[:state].after_transition :to => "payment", :do => :check_if_payment_needed
+
     def store_credit_amount
       adjustments.store_credits.sum(:amount).abs
     end
-
 
     # override core process payments to force payment present
     # in case store credits were destroyed by ensure_sufficient_credit
@@ -28,6 +30,14 @@ module Spree
 
 
     private
+    
+    def check_if_payment_needed
+      self.next unless payment_required?
+    end
+    
+    def auto_apply_credits_to_order
+      @store_credit_amount = (total + store_credit_amount)
+    end
 
     # credit or update store credit adjustment to correct value if amount specified
     #
