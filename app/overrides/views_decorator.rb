@@ -12,6 +12,13 @@ Deface::Override.new(
   :text => "&nbsp;<%= link_to_with_icon('add', t('add_store_credit'), new_admin_user_store_credit_url(user)) %>",
   :disabled => false)
 
+Deface::Override.new(
+  :virtual_path => "spree/admin/users/show",
+  :name => "store_credits_admin_users_show_page",
+  :insert_after => "p",
+  :partial => "spree/admin/shared/store_credits_list",
+  :disabled => false)
+
 # Deface::Override.new(
 #   :virtual_path => "spree/checkout/_payment",
 #   :name => "store_credits_checkout_payment_step",
