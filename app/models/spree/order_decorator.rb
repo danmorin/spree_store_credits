@@ -1,7 +1,7 @@
 module Spree
   Order.class_eval do
-    attr_accessible :store_credit_amount, :remove_store_credits
-    attr_accessor :store_credit_amount, :remove_store_credits
+    attr_accessor :store_credit_amount
+    # attr_accessible :store_credit_amount
 
     # the check for user? below is to ensure we don't break the
     # admin app when creating a new order from the admin console
